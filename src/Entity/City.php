@@ -40,7 +40,7 @@ class City
     private $longitude;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $inseeCode;
 
@@ -53,6 +53,11 @@ class City
      * @ORM\OneToMany(targetEntity=Buyer::class, mappedBy="city")
      */
     private $buyers;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="cities")
+     */
+    private $department;
 
     public function __construct()
     {
@@ -113,12 +118,12 @@ class City
         return $this;
     }
 
-    public function getInseeCode(): ?int
+    public function getInseeCode(): ?string
     {
         return $this->inseeCode;
     }
 
-    public function setInseeCode(int $inseeCode): self
+    public function setInseeCode(string $inseeCode): self
     {
         $this->inseeCode = $inseeCode;
 
@@ -182,6 +187,18 @@ class City
 
             }
         }
+
+        return $this;
+    }
+
+    public function getDepartment(): ?Department
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(?Department $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }
