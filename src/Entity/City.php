@@ -54,6 +54,11 @@ class City
      */
     private $buyers;
 
+    /**
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $department;
+
     public function __construct()
     {
         $this->farmers = new ArrayCollection();
@@ -182,6 +187,18 @@ class City
 
             }
         }
+
+        return $this;
+    }
+
+    public function getDepartment(): ?string
+    {
+        return $this->department;
+    }
+
+    public function setDepartment(?string $department): self
+    {
+        $this->department = $department;
 
         return $this;
     }
