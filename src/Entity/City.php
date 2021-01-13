@@ -45,12 +45,18 @@ class City
     private $inseeCode;
 
     /**
+     * @ORM\OneToMany(targetEntity=Farmer::class, mappedBy="city")
+     */
+    private $farmers;
+  
+    /**
      * @ORM\OneToMany(targetEntity=Buyer::class, mappedBy="city")
      */
     private $buyers;
 
     public function __construct()
     {
+        $this->farmers = new ArrayCollection();
         $this->buyers = new ArrayCollection();
     }
 
@@ -120,6 +126,24 @@ class City
     }
 
     /**
+     * @return Collection|Farmer[]
+     */
+    public function getFarmers(): Collection
+    {
+        return $this->farmers;
+    }
+
+    public function addFarmer(Farmer $farmer): self
+    {
+        if (!$this->farmers->contains($farmer)) {
+            $this->farmers[] = $farmer;
+            $farmer->setCity($this);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection|Buyer[]
      */
     public function getBuyers(): Collection
@@ -137,12 +161,25 @@ class City
         return $this;
     }
 
+    public function removeFarmer(Farmer $farmer): self
+    {
+        if ($this->farmers->removeElement($farmer)) {
+            // set the owning side to null (unless already changed)
+            if ($farmer->getCity() === $this) {
+                $farmer->setCity(null);
+            }
+        }
+
+        return $this;
+    }
+
     public function removeBuyer(Buyer $buyer): self
     {
         if ($this->buyers->removeElement($buyer)) {
             // set the owning side to null (unless already changed)
             if ($buyer->getCity() === $this) {
                 $buyer->setCity(null);
+
             }
         }
 
