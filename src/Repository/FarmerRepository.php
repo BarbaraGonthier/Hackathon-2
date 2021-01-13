@@ -22,9 +22,9 @@ class FarmerRepository extends ServiceEntityRepository
     public function findFarmersByCity()
     {
         return $this->createQueryBuilder('farmer')
-            ->select('COUNT(farmer.firstname) AS total, city.name')
+            ->select('COUNT(farmer.firstName) AS total, city.latitude, city.longitude, city.name')
             ->leftJoin('App\Entity\City', 'city', 'WITH', 'farmer.city = city.id')
-            ->groupBy('city.name')
+            ->groupBy('city.latitude, city.longitude, city.name')
             ->getQuery()
             ->getArrayResult();
     }
