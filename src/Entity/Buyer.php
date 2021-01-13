@@ -26,7 +26,7 @@ class Buyer
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $naÃme;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -50,14 +50,14 @@ class Buyer
         return $this;
     }
 
-    public function getNaÃme(): ?string
+    public function getName(): ?string
     {
-        return $this->naÃme;
+        return $this->name;
     }
 
-    public function setNaÃme(string $naÃme): self
+    public function setName(string $name): self
     {
-        $this->naÃme = $naÃme;
+        $this->name = $name;
 
         return $this;
     }
