@@ -36,7 +36,7 @@
         }
         {% for farmer in farmers %}
         let marker = L.marker([{{ farmer.city.latitude }}, {{ farmer.city.longitude }}]).addTo(mymap);
-        marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+        marker.bindPopup("<b>{{ farmer.city.name }}</b>").openPopup();
         {% endfor %}
     </script>
 {% endblock %}
