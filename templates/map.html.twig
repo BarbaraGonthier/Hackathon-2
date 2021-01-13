@@ -35,8 +35,8 @@
             initMap()
         }
         {% for farmer in farmers %}
-        let marker = L.marker([{{ farmer.city.latitude }}, {{ farmer.city.longitude }}]).addTo(mymap);
-        marker.bindPopup("<b>{{ farmer.city.name }}</b>").openPopup();
+        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}]).addTo(mymap);
+        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }} : {{ farmer.total }}</b>").openPopup();
         {% endfor %}
     </script>
 {% endblock %}
