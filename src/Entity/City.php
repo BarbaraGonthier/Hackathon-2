@@ -55,7 +55,7 @@ class City
     private $buyers;
 
     /**
-     * @ORM\Column(type="string", length=100, nullable=true)
+     * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="cities")
      */
     private $department;
 
@@ -191,12 +191,12 @@ class City
         return $this;
     }
 
-    public function getDepartment(): ?string
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
-    public function setDepartment(?string $department): self
+    public function setDepartment(?Department $department): self
     {
         $this->department = $department;
 

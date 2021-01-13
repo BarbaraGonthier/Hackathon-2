@@ -2,15 +2,20 @@
 
 namespace App\Service;
 
+use App\Entity\Department;
+use App\Repository\DepartmentRepository;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GeographicDivision
 {
     private $client;
 
-    public function __construct(HttpClientInterface $client)
+    private $departmentRepository;
+
+    public function __construct(HttpClientInterface $client, DepartmentRepository $departmentRepository)
     {
         $this->client = $client;
+        $this->departmentRepository = $departmentRepository;
     }
 
     public function getDepartments(): array
@@ -22,11 +27,9 @@ class GeographicDivision
         return $response->toArray();
     }
 
-    public function getDepartment(string $inseeCode): string
+    public function getDepartment(string $inseeCode): ?Department
     {
-        $departments = $this->getDepartments();
         $numberDepartment = substr($inseeCode, 0, 2);
-        $key = array_search($numberDepartment, array_column($departments, 'code'));
-        return $departments[$key]['nom'];
+        return $this->departmentRepository->findOneBy(['code' => $numberDepartment]);
     }
 }
