@@ -40,7 +40,7 @@ class City
     private $longitude;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $inseeCode;
 
@@ -113,12 +113,12 @@ class City
         return $this;
     }
 
-    public function getInseeCode(): ?int
+    public function getInseeCode(): ?string
     {
         return $this->inseeCode;
     }
 
-    public function setInseeCode(int $inseeCode): self
+    public function setInseeCode(string $inseeCode): self
     {
         $this->inseeCode = $inseeCode;
 
