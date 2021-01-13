@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,16 @@ class City
      * @ORM\Column(type="integer")
      */
     private $inseeCode;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Farmer::class, mappedBy="city")
+     */
+    private $farmers;
+
+    public function __construct()
+    {
+        $this->farmers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +115,36 @@ class City
     public function setInseeCode(int $inseeCode): self
     {
         $this->inseeCode = $inseeCode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Farmer[]
+     */
+    public function getFarmers(): Collection
+    {
+        return $this->farmers;
+    }
+
+    public function addFarmer(Farmer $farmer): self
+    {
+        if (!$this->farmers->contains($farmer)) {
+            $this->farmers[] = $farmer;
+            $farmer->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFarmer(Farmer $farmer): self
+    {
+        if ($this->farmers->removeElement($farmer)) {
+            // set the owning side to null (unless already changed)
+            if ($farmer->getCity() === $this) {
+                $farmer->setCity(null);
+            }
+        }
 
         return $this;
     }
