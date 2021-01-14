@@ -19,15 +19,6 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
-    public function findAveragePrices()
-    {
-        return $this->createQueryBuilder('trans')
-            ->select('trans.farmer, AVG(totalPrice) AS average')
-            ->groupBy('trans.farmer')
-            ->getQuery()
-            ->getArrayResult();
-    }
-
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects
     //  */

@@ -50,11 +50,6 @@ class Transaction
      */
     private $quantity;
 
-    /**
-     * @ORM\Column(type="float")
-     */
-    private $totalPrice;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -128,18 +123,6 @@ class Transaction
     public function setQuantity(float $quantity): self
     {
         $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    public function getTotalPrice(): ?float
-    {
-        return $this->totalPrice;
-    }
-
-    public function setTotalPrice(float $totalPrice): self
-    {
-        $this->totalPrice = $totalPrice;
 
         return $this;
     }

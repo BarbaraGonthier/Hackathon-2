@@ -19,8 +19,10 @@
             <input type="reset" class="btn btn-secondary btn-small"  value="Réinitialiser">
             {{ form_end(form) }}
         </div>
-        <div class="infosMobile" id="infos"></div>
-        <div id="map"></div>
+        <div id="map-container">
+            <div class="infosMobile" id="infos"></div>
+            <div id="map"></div>
+        </div>
     </div>
 {% endblock %}
 {% block javascripts %}
@@ -88,7 +90,8 @@
         let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}], { icon: greenIcon }).addTo(map);
         marker{{ loop.index }}.bindPopup('<button class="btn" ' +
             'onclick="displayInfos(' +
-            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\', \'test\')">' +
+            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\',' +
+            ' \'{{ averagePrices[farmer.id] ?? 0 }}\')">' +
             '{{ farmerCity.name }} : {{ farmerCity.total }}</button>').openPopup();
         {% endif %}
         {% endfor %}
@@ -111,7 +114,8 @@
         let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}], { icon: greenIcon }).addTo(map);
         marker{{ loop.index }}.bindPopup('<button class="btn" ' +
             'onclick="displayInfos(' +
-            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\', \'test\')">' +
+            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\',' +
+            ' \'{{ averagePrices[farmer.id] ?? 0 }}\')">' +
             '{{ farmerCity.name }} : {{ farmerCity.total }}</button>').openPopup();
         {% endif %}
         {% endfor %}
@@ -131,28 +135,42 @@
 
     <script>
         function displayInfos(city, farmSize, average) {
+            document.getElementById('infos').innerHTML = '';
             document.getElementById("infos").style.display = "block";
+            document.getElementById("infos").style.float = "left";
+            document.getElementById("infos").style.width = "20%";
+
+            document.getElementById("map-container").className = "d-flex flex-row";
+            document.getElementById("map").style.width = "80%";
+
             let closeButton = document.createElement("button");
             closeButton.className = "close";
             closeButton.type = "button";
             closeButton.addEventListener("click", function (){
                 document.getElementById('infos').innerHTML = '';
-                document.getElementById('infos').style.display='none'
+                document.getElementById('infos').style.display='none';
+                document.getElementById("map").style.width = "100%";
             })
             closeButton.textContent = "X";
             document.getElementById("infos").appendChild(closeButton);
 
             let h1 = document.createElement("h1");
-            h1.className = "text-center my-3";
+            h1.className = "h4 text-center my-4";
             let title = document.createTextNode(city);
             h1.appendChild(title);
             document.getElementById("infos").appendChild(h1);
 
             let div1 = document.createElement("div");
-            let content = document.createTextNode("Taille de la ferme : " + farmSize + "ha");
-            div1.appendChild(content);
+            div1.className = "m-2";
+            let content1 = document.createTextNode("Taille de la ferme : " + farmSize + " ha");
+            div1.appendChild(content1);
             document.getElementById("infos").appendChild(div1);
-            console.log(average);
+
+            let div2 = document.createElement("div");
+            div2.className = "m-2";
+            let content2 = document.createTextNode("Prix de vente moyen : " + average + " €");
+            div2.appendChild(content2);
+            document.getElementById("infos").appendChild(div2);
         }
     </script>
 {% endblock %}
