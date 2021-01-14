@@ -51,5 +51,17 @@
         let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}]).addTo(map);
         marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }} : {{ farmer.total }}</b>").openPopup();
         {% endfor %}
+        map.locate({setView: true, maxZoom: 16});
+
+        {% for buyer in buyers %}
+        let logoIcon{{ loop.index }} = L.icon({
+            iconUrl: '{{ buyer.logo }}',
+            iconSize:     [40, 40], // size of the icon
+            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        })
+        let markerBuyer{{ loop.index }} = L.marker([{{ buyer.latitude }}, {{ buyer.longitude }}], {icon : logoIcon{{ loop.index }}}).addTo(map);
+        markerBuyer{{ loop.index }}.bindPopup("<b>{{ buyer.lastname }}<b> - {{ buyer.name }} ({{buyer.zipcode}}) : {{ buyer.type }}").openPopup();
+        {% endfor %}
     </script>
 {% endblock %}

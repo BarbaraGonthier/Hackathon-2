@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FarmerFixtures extends Fixture implements ContainerAwareInterface, DependentFixtureInterface
 {
-    const LIMIT = 5000;
+    const LIMIT = 500;
 
     /**
      * @var ContainerInterface|null
@@ -52,7 +52,6 @@ class FarmerFixtures extends Fixture implements ContainerAwareInterface, Depende
             $farmer->setFirstName($line['first_name']);
             $farmer->setLastName($line['last_name']);
             $farmer->setFarmSize($line['farm_size']);
-
             $manager->persist($farmer);
             $this->addReference('farmer_' .$i,$farmer);
         }

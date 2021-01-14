@@ -3,12 +3,7 @@
 
 namespace App\DataFixtures;
 
-
-use App\Entity\Products;
 use App\Entity\Transaction;
-use App\Repository\BuyerRepository;
-use App\Repository\FarmerRepository;
-use App\Repository\ProductsRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -23,25 +18,6 @@ class TransactionFixtures extends Fixture implements ContainerAwareInterface, De
      * @var ContainerInterface|null
      */
     private ?ContainerInterface $container;
-    /**
-     * @var BuyerRepository
-     */
-    private BuyerRepository $buyerRepository;
-
-    private FarmerRepository $farmerRepository;
-    /**
-     * @var ProductsRepository
-     */
-    private ProductsRepository $productsRepository;
-
-    public function __construct(BuyerRepository $buyerRepository,
-                                FarmerRepository $farmerRepository,
-                                ProductsRepository $productsRepository)
-    {
-        $this->buyerRepository = $buyerRepository;
-        $this->farmerRepository = $farmerRepository;
-        $this->productsRepository = $productsRepository;
-    }
 
     public function setContainer(ContainerInterface $container = null)
     {
@@ -61,7 +37,7 @@ class TransactionFixtures extends Fixture implements ContainerAwareInterface, De
             $transaction->setQuantity($line['quantity']);
             $transaction->setPrice($line['price']);
             $transaction->setBuyer($this->getReference('buyer_'.rand(0,7)));
-            $transaction->setFarmer($this->getReference('farmer_' . rand(1, 500)));
+            $transaction->setFarmer($this->getReference('farmer_' . rand(10, 480)));
             $transaction->setProduct($this->getReference('product_' . rand(0, 22)));
             $date = new \DateTime($line['created_at']);
             $transaction->setCreatedAt($date);

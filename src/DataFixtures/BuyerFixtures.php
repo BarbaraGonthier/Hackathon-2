@@ -20,19 +20,9 @@ class BuyerFixtures extends Fixture implements ContainerAwareInterface, Dependen
      */
     private ?ContainerInterface $container;
 
-    /**
-     * @var CityRepository
-     */
-    private CityRepository $cityRepository;
-
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
-    }
-
-    public function __construct(CityRepository $cityRepository)
-    {
-        $this->cityRepository = $cityRepository;
     }
 
     /**
@@ -50,10 +40,12 @@ class BuyerFixtures extends Fixture implements ContainerAwareInterface, Dependen
             $buyer = new Buyer();
             $buyer->setName($line['name']);
             $buyer->setType($line['type']);
+            $buyer->setLogo($line['logo']);
             $buyer->setCity($this->getReference('city_'.rand(10,4800)));
             $manager->persist($buyer);
             $this->addReference('buyer_' .$i,$buyer);
         }
+
         $manager->flush();
     }
 
