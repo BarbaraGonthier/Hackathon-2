@@ -47,9 +47,17 @@
         map.on('locationerror', onLocationError);
 
         map.locate({setView: true, maxZoom: 16});
+
+        let greenIcon = L.icon({
+            iconUrl: '{{ asset('build/CA-logo.png') }}',
+
+            iconSize:     [52, 52], // size of the icon
+            iconAnchor:   [25, 51], // point of the icon which will correspond to marker's location
+            popupAnchor:  [-6, -48] // point from which the popup should open relative to the iconAnchor
+        });
         {% for farmer in farmers %}
-        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}]).addTo(map);
-        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }} : {{ farmer.total }}</b>").openPopup();
+        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}], { icon: greenIcon }).addTo(map);
+        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }}</b><br> Membres : {{ farmer.total }}").openPopup();
         {% endfor %}
     </script>
 {% endblock %}
