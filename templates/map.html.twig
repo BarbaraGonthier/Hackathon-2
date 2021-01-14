@@ -74,6 +74,7 @@
         let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}], { icon: greenIcon }).addTo(map);
         marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }}</b><br> Membres : {{ farmer.total }}").openPopup();
         {% endfor %}
+        {% elseif display == 'buyers' %}
         {% else %}
         {% for farmer in farmers %}
         let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}], { icon: greenIcon }).addTo(map);
