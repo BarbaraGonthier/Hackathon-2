@@ -8,9 +8,8 @@
 {% endblock %}
 {% block body %}
     <div class="container-fluid mt-3">
-        <h1 class="text-center pt-4">Notre communauté</h1>
-        <div class="mb-4 filters">
-            <h4 class="mb-3">Recherchez nos membres </h4>
+        <div class="filters">
+            <h1 class="mb-3 h4">Recherchez nos membres </h1>
             {{ form_start(form) }}
             {{ form_row(form.role) }}
             <input type='submit' value='Filtrer'>
