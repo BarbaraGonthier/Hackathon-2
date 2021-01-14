@@ -1,0 +1,9 @@
+id,city_id,name,type
+1,28000,SOUFFLET,Négociant
+2,28130,CARGILL,Négociant
+3,28190,SCAEL,Coopérative
+4,28300,BUNGE,Négociant
+5,41100,HUTTEPAIN,Fabricant d’alimentation animale
+6,41310,SANDERS,Fabricant d’alimentation animale
+7,41320,AGRIAL,Coopérative
+8,41200,OCEALIA,Coopérative
