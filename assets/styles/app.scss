@@ -1,11 +1,26 @@
 @import "variables.scss";
 
-body {
-    background-color: lightgray;
-}
-
 #map{
     height: 45vw;
+}
+
+.filters {
+    background-color: lighten($black, 78%);
+    padding: 24px;
+}
+
+#filter_role {
+    margin-bottom: 8px;
+}
+
+.form-group label, .form-control {
+    margin-bottom: 0;
+    margin-right: 24px;
+}
+
+label {
+    margin-right: 24px;
+    margin-left: 4px;
 }
 
 @media screen and (max-width: 760px){

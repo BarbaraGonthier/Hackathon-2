@@ -37,7 +37,7 @@ class TransactionFixtures extends Fixture implements ContainerAwareInterface, De
             $transaction->setQuantity($line['quantity']);
             $transaction->setPrice($line['price']);
             $transaction->setBuyer($this->getReference('buyer_'.rand(0,7)));
-            $transaction->setFarmer($this->getReference('farmer_' . rand(10, 480)));
+            $transaction->setFarmer($this->getReference('farmer_' . rand(1, 499)));
             $transaction->setProduct($this->getReference('product_' . rand(0, 22)));
             $date = new \DateTime($line['created_at']);
             $transaction->setCreatedAt($date);

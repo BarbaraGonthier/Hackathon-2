@@ -7,8 +7,14 @@
           crossorigin=""/>
 {% endblock %}
 {% block body %}
-    <h1 class="text-center pt-4">Notre communauté</h1>
     <div class="container-fluid mt-3">
+        <div class="filters">
+            <h1 class="mb-3 h4">Recherchez nos membres </h1>
+            {{ form_start(form) }}
+            {{ form_row(form.role) }}
+            <input type='submit' value='Filtrer'>
+            {{ form_end(form) }}
+        </div>
         <div id="map"></div>
     </div>
 {% endblock %}
@@ -20,7 +26,14 @@
     </script>
     <script>
         let map = L.map('map').setView([46.920592, 1.968988], 7);
-
+        let redIcon = new L.Icon({
+            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+        });
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
             maxZoom: 14,
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
@@ -33,7 +46,7 @@
         function onLocationFound(e) {
             let radius = e.accuracy / 2;
 
-            L.marker(e.latlng).addTo(map)
+            L.marker(e.latlng,  {icon: redIcon}).addTo(map)
                 .bindPopup("You are within " + radius + " meters from this point").openPopup();
 
             L.circle(e.latlng, radius).addTo(map);
@@ -47,13 +60,21 @@
         map.on('locationerror', onLocationError);
 
         map.locate({setView: true, maxZoom: 16});
-        {% for farmer in farmers %}
-        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}]).addTo(map);
-        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }} : {{ farmer.total }}</b>").openPopup();
-        {% endfor %}
-        map.locate({setView: true, maxZoom: 16});
 
-        {% for buyer in buyers %}
+        let greenIcon = L.icon({
+            iconUrl: '{{ asset('build/CA-logo.png') }}',
+
+            iconSize:     [52, 52], // size of the icon
+            iconAnchor:   [25, 51], // point of the icon which will correspond to marker's location
+            popupAnchor:  [-6, -48] // point from which the popup should open relative to the iconAnchor
+        });
+        {% if display == 'farmers' %}
+        {% for farmer in farmers %}
+        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}], { icon: greenIcon }).addTo(map);
+        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }}</b><br> Membres : {{ farmer.total }}").openPopup();
+        {% endfor %}
+        {% elseif display == 'buyers' %}
+         {% for buyer in buyers %}
         let logoIcon{{ loop.index }} = L.icon({
             iconUrl: '{{ buyer.logo }}',
             iconSize:     [40, 40], // size of the icon
@@ -63,5 +84,11 @@
         let markerBuyer{{ loop.index }} = L.marker([{{ buyer.latitude }}, {{ buyer.longitude }}], {icon : logoIcon{{ loop.index }}}).addTo(map);
         markerBuyer{{ loop.index }}.bindPopup("<b>{{ buyer.lastname }}<b> - {{ buyer.name }} ({{buyer.zipcode}}) : {{ buyer.type }}").openPopup();
         {% endfor %}
+        {% else %}
+        {% for farmer in farmers %}
+        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}], { icon: greenIcon }).addTo(map);
+        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }}</b><br> Membres : {{ farmer.total }}").openPopup();
+        {% endfor %}
+        {% endif %}
     </script>
 {% endblock %}
