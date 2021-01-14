@@ -12,8 +12,11 @@
             <h1 class="mb-3 h4">Recherchez nos membres </h1>
             {{ form_start(form) }}
             {{ form_row(form.role) }}
-            {{ form_row(form.department) }}
-            <input type='submit' value='Filtrer'>
+            <div class="mb-3">
+                {{ form_label(form.department, 'Département') }} {{ form_widget(form.department)}}
+            </div>
+            <input type='submit' class="btn btn-success btn-small" value='Filtrer'>
+            <input type="reset" class="btn btn-secondary btn-small"  value="Réinitialiser">
             {{ form_end(form) }}
         </div>
         <div class="infosMobile" id="infos"></div>
