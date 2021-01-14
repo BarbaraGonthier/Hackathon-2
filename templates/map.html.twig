@@ -7,8 +7,15 @@
           crossorigin=""/>
 {% endblock %}
 {% block body %}
-    <h1 class="text-center pt-4">Notre communauté</h1>
     <div class="container-fluid mt-3">
+        <h1 class="text-center pt-4">Notre communauté</h1>
+        <div class="mb-4 filters">
+            <h4 class="mb-3">Recherchez nos membres </h4>
+            {{ form_start(form) }}
+            {{ form_row(form.role) }}
+            <input type='submit' value='Filtrer'>
+            {{ form_end(form) }}
+        </div>
         <div id="map"></div>
     </div>
 {% endblock %}
@@ -62,9 +69,16 @@
             iconAnchor:   [25, 51], // point of the icon which will correspond to marker's location
             popupAnchor:  [-6, -48] // point from which the popup should open relative to the iconAnchor
         });
+        {% if display == 'farmers' %}
         {% for farmer in farmers %}
         let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}], { icon: greenIcon }).addTo(map);
         marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }}</b><br> Membres : {{ farmer.total }}").openPopup();
         {% endfor %}
+        {% else %}
+        {% for farmer in farmers %}
+        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}], { icon: greenIcon }).addTo(map);
+        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }}</b><br> Membres : {{ farmer.total }}").openPopup();
+        {% endfor %}
+        {% endif %}
     </script>
 {% endblock %}
