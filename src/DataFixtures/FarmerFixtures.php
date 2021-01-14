@@ -54,6 +54,7 @@ class FarmerFixtures extends Fixture implements ContainerAwareInterface, Depende
             $farmer->setFarmSize($line['farm_size']);
 
             $manager->persist($farmer);
+            $this->addReference('farmer_' .$i,$farmer);
         }
         $manager->flush();
     }
