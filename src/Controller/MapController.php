@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+
+use App\Repository\BuyerRepository;
 use App\Entity\Filter;
 use App\Form\FilterType;
+
 use App\Repository\FarmerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +18,13 @@ class MapController extends AbstractController
     /**
      * @Route("/map", name="map")
      */
-    public function index(FarmerRepository $farmerRepository, Request $request): Response
+    public function index(FarmerRepository $farmerRepository, Request $request, BuyerRepository $buyerRepository): Response
+
     {
         $display = '';
         $farmers = $farmerRepository->findFarmersByCity();
+        $buyers = $buyerRepository->findBuyersByCity();
+      
         $filter = new Filter();
         $form = $this->createForm(FilterType::class, $filter);
         $form->handleRequest($request);
@@ -30,6 +36,7 @@ class MapController extends AbstractController
         return $this->render('map.html.twig', [
             'form' => $form->createView(),
             'farmers' => $farmers,
+            'buyers' => $buyers,
             'display' => $display
         ]);
     }

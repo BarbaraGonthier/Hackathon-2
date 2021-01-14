@@ -1,9 +1,9 @@
-id,city_id,name,type
-1,28000,SOUFFLET,Négociant
-2,28130,CARGILL,Négociant
-3,28190,SCAEL,Coopérative
-4,28300,BUNGE,Négociant
-5,41100,HUTTEPAIN,Fabricant d’alimentation animale
-6,41310,SANDERS,Fabricant d’alimentation animale
-7,41320,AGRIAL,Coopérative
-8,41200,OCEALIA,Coopérative
+id,city_id,name,type,logo
+1,28000,SOUFFLET,Négociant,https://pbs.twimg.com/profile_images/912931073306365952/WI5kKNBv.jpg
+2,28130,CARGILL,Négociant,https://seekvectorlogo.com/wp-content/uploads/2018/02/cargill-vector-logo-small.png
+3,28190,SCAEL,Coopérative,https://pbs.twimg.com/profile_images/1138473214517157894/Xyg7ys9c.png
+4,28300,BUNGE,Négociant,https://image.slidesharecdn.com/comm401-bunge-140816190547-phpapp02/95/bunge-1-638.jpg?cb=1408216033
+5,41100,HUTTEPAIN,Fabricant d’alimentation animale,https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG9Yev5M328FHO-G_yEK1qT3ZYbpOGGwlqaA&usqp=CAU
+6,41310,SANDERS,Fabricant d’alimentation animale,https://www.bouhieralimentationanimale.com/photo/catalog/250/logo_sanders.jpg
+7,41320,AGRIAL,Coopérative,https://media.glassdoor.com/sqll/12899/agrial-squarelogo-1577786424845.png
+8,41200,OCEALIA,Coopérative,https://www.ocealia-groupe.fr/wp-content/themes/FoundationPress-master/img/logo-ocealia.svg
