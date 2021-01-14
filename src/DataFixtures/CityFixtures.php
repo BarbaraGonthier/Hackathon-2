@@ -47,6 +47,7 @@ class CityFixtures extends Fixture implements ContainerAwareInterface, Dependent
             $city->setLatitude($line['lat']);
             $city->setLongitude($line['long']);
             $city->setDepartment($this->geographicDivision->getDepartment($line['insee_code']));
+            $this->addReference('city_' . $i, $city);
             $manager->persist($city);
         }
         $manager->flush();
