@@ -23,7 +23,7 @@ class Buyer
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="buyers")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $city;
+    private $city ;
 
     /**
      * @ORM\Column(type="string", length=255)
