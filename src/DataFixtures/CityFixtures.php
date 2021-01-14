@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CityFixtures extends Fixture implements ContainerAwareInterface, DependentFixtureInterface
 {
-    const LIMIT = 35870;
+    const LIMIT = 5000;
 
     /**
      * @var ContainerInterface|null
@@ -47,6 +47,7 @@ class CityFixtures extends Fixture implements ContainerAwareInterface, Dependent
             $city->setLatitude($line['lat']);
             $city->setLongitude($line['long']);
             $city->setDepartment($this->geographicDivision->getDepartment($line['insee_code']));
+            $this->addReference('city_' . $i, $city);
             $manager->persist($city);
 
         }
