@@ -24,16 +24,6 @@ class AveragePrice
         $this->transactionRepository = $transactionRepository;
     }
 
-    public function calculateByFarmer(int $idFarmer): ?float
-    {
-        $transactions = $this->transactionRepository->findBy(['farmer_id' => $idFarmer]);
-        $sumPrices = 0;
-        foreach ($transactions as $transaction) {
-            $sumPrices += $transaction->getPrice() * $transaction->getQuantity();
-        }
-        return $sumPrices / count($transactions);
-    }
-
     public function calculateByDepartment(int $idDepartment): ?float
     {
         $cities = $this->cityRepository->findBy(['department_id' => $idDepartment]);

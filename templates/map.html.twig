@@ -9,6 +9,7 @@
 {% block body %}
     <h1 class="text-center pt-4">Notre communauté</h1>
     <div class="container mt-3">
+        <div class="infosMobile" id="infos"></div>
         <div id="map"></div>
     </div>
 {% endblock %}
@@ -48,8 +49,44 @@
 
         map.locate({setView: true, maxZoom: 16});
         {% for farmer in farmers %}
-        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}]).addTo(map);
-        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }} : {{ farmer.total }}</b>").openPopup();
+        {% for farmerCity in farmersCity %}
+        {% for averagePrice in averagePrices|filter(averagePrice => averagePrice.farmer.id == farmer.id) %}
+        {% if farmer.id == farmerCity.id %}
+        let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}]).addTo(map);
+        marker{{ loop.index }}.bindPopup('<button class="btn" ' +
+            'onclick="displayInfos(' +
+            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\', \'{{ averagePrice.average }}\')">' +
+            '{{ farmerCity.name }} : {{ farmerCity.total }}</button>').openPopup();
+        {% endif %}
         {% endfor %}
+        {% endfor %}
+        {% endfor %}
+    </script>
+
+    <script>
+        function displayInfos(city, farmSize, average) {
+            document.getElementById("infos").style.display = "block";
+            let closeButton = document.createElement("button");
+            closeButton.className = "close";
+            closeButton.type = "button";
+            closeButton.addEventListener("click", function (){
+                document.getElementById('infos').innerHTML = '';
+                document.getElementById('infos').style.display='none'
+            })
+            closeButton.textContent = "X";
+            document.getElementById("infos").appendChild(closeButton);
+
+            let h1 = document.createElement("h1");
+            h1.className = "text-center my-3";
+            let title = document.createTextNode(city);
+            h1.appendChild(title);
+            document.getElementById("infos").appendChild(h1);
+
+            let div1 = document.createElement("div");
+            let content = document.createTextNode("Taille de la ferme : " + farmSize + "ha");
+            div1.appendChild(content);
+            document.getElementById("infos").appendChild(div1);
+            console.log(average);
+        }
     </script>
 {% endblock %}

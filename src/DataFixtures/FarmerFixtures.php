@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FarmerFixtures extends Fixture implements ContainerAwareInterface, DependentFixtureInterface
 {
-    const LIMIT = 5000;
+    const LIMIT = 500;
 
     /**
      * @var ContainerInterface|null
