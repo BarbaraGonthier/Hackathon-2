@@ -4,12 +4,12 @@ body {
     background-color: lightgray;
 }
 
-#mapid{
+#map{
     height: 45vw;
 }
 
 @media screen and (max-width: 760px){
-    #mapid{
+    #map{
         height: 80vh;
     }
 
