@@ -71,7 +71,7 @@ class MapController extends AbstractController
             'farmersCity' => $farmersResult ?? $farmersCities,
             'buyers' => $buyersResult ?? $buyers,
             'display' => $display,
-            'department' => $department
+            'department' => $department,
             'farmers' => $farmers,
         ]);
     }
