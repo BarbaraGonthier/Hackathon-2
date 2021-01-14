@@ -28,7 +28,10 @@ class FilterType extends AbstractType
             ])
             ->add('department', EntityType::class,[
                 'class' => Department::class,
+                'label' => false,
                 'choice_label' => 'name',
+                'placeholder' => 'Tous les départements',
+                'required' => false
             ])
         ;
     }

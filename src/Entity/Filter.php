@@ -27,7 +27,7 @@ class Filter
         return $this->department;
     }
 
-    public function setDepartment(?Department $department): self
+    public function setDepartment(Department $department): self
     {
         $this->department = $department;
 
