@@ -16,6 +16,7 @@
             <input type='submit' value='Filtrer'>
             {{ form_end(form) }}
         </div>
+        <div class="infosMobile" id="infos"></div>
         <div id="map"></div>
     </div>
 {% endblock %}
@@ -43,23 +44,18 @@
             tileSize: 512,
             zoomOffset: -1
         }).addTo(map);
-
         function onLocationFound(e) {
             let radius = e.accuracy / 2;
             L.marker(e.latlng,  {icon: redIcon}).addTo(map)
                 .bindPopup("You are within " + radius + " meters from this point").openPopup();
             L.circle(e.latlng, radius).addTo(map);
         }
-
         function onLocationError(e) {
             alert(e.message);
         }
-
         map.on('locationfound', onLocationFound);
         map.on('locationerror', onLocationError);
-
         map.locate({setView: true, maxZoom: 16});
-
         let greenIcon = L.icon({
             iconUrl: '{{ asset('build/CA-logo.png') }}',
             iconSize:     [52, 52], // size of the icon
@@ -68,8 +64,15 @@
         });
         {% if display == 'farmers' %}
         {% for farmer in farmers %}
-        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}], { icon: greenIcon }).addTo(map);
-        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }}</b><br> Membres : {{ farmer.total }}").openPopup();
+        {% for farmerCity in farmersCity %}
+        {% if farmer.id == farmerCity.id %}
+        let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}], { icon: greenIcon }).addTo(map);
+        marker{{ loop.index }}.bindPopup('<button class="btn" ' +
+            'onclick="displayInfos(' +
+            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\', \'test\')">' +
+            '{{ farmerCity.name }} : {{ farmerCity.total }}</button>').openPopup();
+        {% endif %}
+        {% endfor %}
         {% endfor %}
         {% elseif display == 'buyers' %}
         {% for buyer in buyers %}
@@ -84,8 +87,15 @@
         {% endfor %}
         {% else %}
         {% for farmer in farmers %}
-        let marker{{ loop.index }} = L.marker([{{ farmer.latitude }}, {{ farmer.longitude }}], { icon: greenIcon }).addTo(map);
-        marker{{ loop.index }}.bindPopup("<b>{{ farmer.name }}</b><br> Membres : {{ farmer.total }}").openPopup();
+        {% for farmerCity in farmersCity %}
+        {% if farmer.id == farmerCity.id %}
+        let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}], { icon: greenIcon }).addTo(map);
+        marker{{ loop.index }}.bindPopup('<button class="btn" ' +
+            'onclick="displayInfos(' +
+            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\', \'test\')">' +
+            '{{ farmerCity.name }} : {{ farmerCity.total }}</button>').openPopup();
+        {% endif %}
+        {% endfor %}
         {% endfor %}
         {% for buyer in buyers %}
         let logoIconBuyer{{ loop.index }} = L.icon({
@@ -98,5 +108,32 @@
         markerBuyer{{ loop.index }}.bindPopup("<b>{{ buyer.lastname }}<b> - {{ buyer.name }} ({{buyer.zipcode}}) : {{ buyer.type }}").openPopup();
         {% endfor %}
         {% endif %}
+    </script>
+
+    <script>
+        function displayInfos(city, farmSize, average) {
+            document.getElementById("infos").style.display = "block";
+            let closeButton = document.createElement("button");
+            closeButton.className = "close";
+            closeButton.type = "button";
+            closeButton.addEventListener("click", function (){
+                document.getElementById('infos').innerHTML = '';
+                document.getElementById('infos').style.display='none'
+            })
+            closeButton.textContent = "X";
+            document.getElementById("infos").appendChild(closeButton);
+
+            let h1 = document.createElement("h1");
+            h1.className = "text-center my-3";
+            let title = document.createTextNode(city);
+            h1.appendChild(title);
+            document.getElementById("infos").appendChild(h1);
+
+            let div1 = document.createElement("div");
+            let content = document.createTextNode("Taille de la ferme : " + farmSize + "ha");
+            div1.appendChild(content);
+            document.getElementById("infos").appendChild(div1);
+            console.log(average);
+        }
     </script>
 {% endblock %}

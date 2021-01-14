@@ -8,6 +8,7 @@ use App\Entity\Filter;
 use App\Form\FilterType;
 
 use App\Repository\FarmerRepository;
+use App\Repository\TransactionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,13 +19,19 @@ class MapController extends AbstractController
     /**
      * @Route("/map", name="map")
      */
-    public function index(FarmerRepository $farmerRepository, Request $request, BuyerRepository $buyerRepository): Response
-
-    {
+    public function index(
+        FarmerRepository $farmerRepository,
+        Request $request,
+        BuyerRepository $buyerRepository,
+        TransactionRepository $transactionRepository
+    ): Response {
         $display = '';
         $department = '';
         $arrayOfCities = [];
-        $farmers = $farmerRepository->findFarmersByCity();
+        $farmersCities = $farmerRepository->findFarmersByCity();
+        $farmers = $farmerRepository->findAll();
+        //$averagePrices = $transactionRepository->findAveragePrices();
+
         $buyers = $buyerRepository->findBuyersByCity();
       
         $filter = new Filter();
@@ -42,7 +49,7 @@ class MapController extends AbstractController
             foreach($departmentCities as $departmentCity) {
                 $arrayOfCities[] = $departmentCity->getName();
             }
-            foreach ($farmers as $farmer) {
+            foreach ($farmersCities as $farmer) {
                 $farmerCity = $farmer['name'];
                 if (in_array($farmerCity, $arrayOfCities)) {
                     $farmersResult[] = $farmer;
@@ -55,16 +62,17 @@ class MapController extends AbstractController
                 }
             }
 
-            $farmers = [];
-//            $buyers = [];
+            $farmersCities = [];
+            $buyers = [];
         }
 
         return $this->render('map.html.twig', [
             'form' => $form->createView(),
-            'farmers' => $farmersResult ?? $farmers,
+            'farmersCity' => $farmersResult ?? $farmersCities,
             'buyers' => $buyersResult ?? $buyers,
             'display' => $display,
             'department' => $department
+            'farmers' => $farmers,
         ]);
     }
 }
