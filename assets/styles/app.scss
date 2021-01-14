@@ -5,6 +5,13 @@ body {
 }
 
 #mapid{
-    height: 100vw;
+    height: 45vw;
+}
+
+@media screen and (max-width: 760px){
+    #mapid{
+        height: 80vh;
+    }
+
 }
 @import "~bootstrap/scss/bootstrap";
