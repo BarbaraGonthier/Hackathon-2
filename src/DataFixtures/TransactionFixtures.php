@@ -3,17 +3,16 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Buyer;
-use App\Repository\CityRepository;
+use App\Entity\Transaction;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class BuyerFixtures extends Fixture implements ContainerAwareInterface, DependentFixtureInterface
+class TransactionFixtures extends Fixture implements ContainerAwareInterface, DependentFixtureInterface
 {
-    const LIMIT = 8;
+    const LIMIT = 5000;
 
     /**
      * @var ContainerInterface|null
@@ -25,32 +24,30 @@ class BuyerFixtures extends Fixture implements ContainerAwareInterface, Dependen
         $this->container = $container;
     }
 
-    /**
-     * @param ObjectManager $manager
-     */
     public function load(ObjectManager $manager)
     {
         $serializer = $this->container->get('serializer');
-        $filepath = realpath ("./") . "/src/DataFixtures/buyers.csv";
+        $filepath = realpath ("./") . "/src/DataFixtures/transactions.csv";
 
         $data = $serializer->decode(file_get_contents($filepath), 'csv');
 
         for ($i=0; $i < count($data) && $i < self::LIMIT; $i++) {
             $line = $data[$i];
-            $buyer = new Buyer();
-            $buyer->setName($line['name']);
-            $buyer->setType($line['type']);
-            $buyer->setLogo($line['logo']);
-            $buyer->setCity($this->getReference('city_'.rand(10,4800)));
-            $manager->persist($buyer);
-            $this->addReference('buyer_' .$i,$buyer);
+            $transaction = new Transaction();
+            $transaction->setQuantity($line['quantity']);
+            $transaction->setPrice($line['price']);
+            $transaction->setBuyer($this->getReference('buyer_'.rand(0,7)));
+            $transaction->setFarmer($this->getReference('farmer_' . rand(1, 99)));
+            $transaction->setProduct($this->getReference('product_' . rand(0, 22)));
+            $date = new \DateTime($line['created_at']);
+            $transaction->setCreatedAt($date);
+            $manager->persist($transaction);
         }
-
         $manager->flush();
     }
 
     public function getDependencies(): array
     {
-        return [CityFixtures::class];
+        return [BuyerFixtures::class];
     }
 }

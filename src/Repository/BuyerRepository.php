@@ -19,6 +19,15 @@ class BuyerRepository extends ServiceEntityRepository
         parent::__construct($registry, Buyer::class);
     }
 
+    public function findBuyersByCity()
+    {
+        return $this->createQueryBuilder('buyer')
+            ->select('buyer.name AS lastname, buyer.type, buyer.logo, city.latitude, city.longitude, city.zipcode, city.name')
+            ->leftJoin('App\Entity\City', 'city', 'WITH', 'buyer.city = city.id')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     // /**
     //  * @return Buyer[] Returns an array of Buyer objects
     //  */

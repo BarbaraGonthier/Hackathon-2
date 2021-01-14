@@ -40,7 +40,7 @@ class FarmerFixtures extends Fixture implements ContainerAwareInterface, Depende
     public function load(ObjectManager $manager)
     {
         $serializer = $this->container->get('serializer');
-        $filepath = realpath ("./") . "/src/DataFixtures/farmers.csv";
+        $filepath = realpath ("./") . "/src/DataFixtures/farmers100.csv";
         $data = $serializer->decode(file_get_contents($filepath), 'csv');
 
         for ($i=0; $i < count($data) && $i < self::LIMIT; $i++) {
@@ -52,8 +52,8 @@ class FarmerFixtures extends Fixture implements ContainerAwareInterface, Depende
             $farmer->setFirstName($line['first_name']);
             $farmer->setLastName($line['last_name']);
             $farmer->setFarmSize($line['farm_size']);
-
             $manager->persist($farmer);
+            $this->addReference('farmer_' .$i,$farmer);
         }
         $manager->flush();
     }
