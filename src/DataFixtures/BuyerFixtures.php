@@ -50,8 +50,9 @@ class BuyerFixtures extends Fixture implements ContainerAwareInterface, Dependen
             $buyer = new Buyer();
             $buyer->setName($line['name']);
             $buyer->setType($line['type']);
-            $buyer->setCity($this->cityRepository->findOneBy(['zipcode' => $line['city_id']]));
+            $buyer->setCity($this->getReference('city_'.rand(10,4800)));
             $manager->persist($buyer);
+            $this->addReference('buyer_' .$i,$buyer);
         }
         $manager->flush();
     }

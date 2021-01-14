@@ -36,7 +36,7 @@ class ProductFixtures extends Fixture implements ContainerAwareInterface
             $product->setName($line['name']);
             $product->setCategory($line['category']);
             $manager->persist($product);
-
+            $this->addReference('product_' . $i,$product);
         }
         $manager->flush();
     }
