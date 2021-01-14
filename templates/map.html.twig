@@ -12,6 +12,7 @@
             <h1 class="mb-3 h4">Recherchez nos membres </h1>
             {{ form_start(form) }}
             {{ form_row(form.role) }}
+            {{ form_row(form.department) }}
             <input type='submit' value='Filtrer'>
             {{ form_end(form) }}
         </div>
@@ -45,10 +46,8 @@
 
         function onLocationFound(e) {
             let radius = e.accuracy / 2;
-
             L.marker(e.latlng,  {icon: redIcon}).addTo(map)
                 .bindPopup("You are within " + radius + " meters from this point").openPopup();
-
             L.circle(e.latlng, radius).addTo(map);
         }
 
@@ -63,7 +62,6 @@
 
         let greenIcon = L.icon({
             iconUrl: '{{ asset('build/CA-logo.png') }}',
-
             iconSize:     [52, 52], // size of the icon
             iconAnchor:   [25, 51], // point of the icon which will correspond to marker's location
             popupAnchor:  [-6, -48] // point from which the popup should open relative to the iconAnchor

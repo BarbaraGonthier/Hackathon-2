@@ -22,6 +22,8 @@ class MapController extends AbstractController
 
     {
         $display = '';
+        $department = '';
+        $arrayOfCities = [];
         $farmers = $farmerRepository->findFarmersByCity();
         $buyers = $buyerRepository->findBuyersByCity();
       
@@ -30,14 +32,39 @@ class MapController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $filters = $form->getData();
-            $filters->getRole() == 'farmers' ? $display = 'farmers' : $display = 'buyers';
+            if ($filters->getRole() == 'farmers') {
+                $display = 'farmers';
+            } elseif ($filters->getRole() == 'buyers'){
+                $display = 'buyers';
+            }
+            $department = $filters->getDepartment();
+            $departmentCities = $department->getCities();
+            foreach($departmentCities as $departmentCity) {
+                $arrayOfCities[] = $departmentCity->getName();
+            }
+            foreach ($farmers as $farmer) {
+                $farmerCity = $farmer['name'];
+                if (in_array($farmerCity, $arrayOfCities)) {
+                    $farmersResult[] = $farmer;
+                }
+            }
+            foreach ($buyers as $buyer) {
+                $buyerCity = $buyer['name'];
+                if (in_array($buyerCity, $arrayOfCities)) {
+                    $buyersResult[] = $buyer;
+                }
+            }
+
+            $farmers = [];
+//            $buyers = [];
         }
 
         return $this->render('map.html.twig', [
             'form' => $form->createView(),
-            'farmers' => $farmers,
-            'buyers' => $buyers,
-            'display' => $display
+            'farmers' => $farmersResult ?? $farmers,
+            'buyers' => $buyersResult ?? $buyers,
+            'display' => $display,
+            'department' => $department
         ]);
     }
 }
