@@ -3,7 +3,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Buyer;
+use App\Entity\Farmer;
 use App\Repository\CityRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -11,15 +11,14 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class BuyerFixtures extends Fixture implements ContainerAwareInterface, DependentFixtureInterface
+class FarmerFixtures extends Fixture implements ContainerAwareInterface, DependentFixtureInterface
 {
-    const LIMIT = 8;
+    const LIMIT = 5000;
 
     /**
      * @var ContainerInterface|null
      */
     private ?ContainerInterface $container;
-
     /**
      * @var CityRepository
      */
@@ -29,7 +28,6 @@ class BuyerFixtures extends Fixture implements ContainerAwareInterface, Dependen
     {
         $this->container = $container;
     }
-
     public function __construct(CityRepository $cityRepository)
     {
         $this->cityRepository = $cityRepository;
@@ -37,26 +35,29 @@ class BuyerFixtures extends Fixture implements ContainerAwareInterface, Dependen
 
     /**
      * @param ObjectManager $manager
+     * @throws \Exception
      */
     public function load(ObjectManager $manager)
     {
         $serializer = $this->container->get('serializer');
-        $filepath = realpath ("./") . "/src/DataFixtures/buyers.csv";
-
+        $filepath = realpath ("./") . "/src/DataFixtures/farmers.csv";
         $data = $serializer->decode(file_get_contents($filepath), 'csv');
 
         for ($i=0; $i < count($data) && $i < self::LIMIT; $i++) {
             $line = $data[$i];
-            $buyer = new Buyer();
-            $buyer->setName($line['name']);
-            $buyer->setType($line['type']);
-            $buyer->setCity($this->getReference('city_'.rand(10,4800)));
-            $manager->persist($buyer);
-            $this->addReference('buyer_' .$i,$buyer);
+            $farmer = new Farmer();
+            $farmer->setCity($this->getReference('city_'.rand(10,4800)));
+            $date = new \DateTime($line['registered_at']);
+            $farmer->setRegisteredAt($date);
+            $farmer->setFirstName($line['first_name']);
+            $farmer->setLastName($line['last_name']);
+            $farmer->setFarmSize($line['farm_size']);
+
+            $manager->persist($farmer);
+            $this->addReference('farmer_' .$i,$farmer);
         }
         $manager->flush();
     }
-
     public function getDependencies(): array
     {
         return [CityFixtures::class];
