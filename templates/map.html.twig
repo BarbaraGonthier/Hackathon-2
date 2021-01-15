@@ -100,8 +100,8 @@
         let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}], { icon: greenIcon }).addTo(map);
         marker{{ loop.index }}.bindPopup('<button class="btn btn-sm" ' +
             'onclick="displayInfos(' +
-            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\',' +
-            ' \'{{ averagePrices[farmer.id] ?? 0 }}\')">' +
+            '\'{{ farmerCity.name|lower|title }}\', \'{{ farmer.farmSize }}\',' +
+            ' \'{{ averagePrices[farmer.id] ?? 0 }}\', {{ products[farmer.id]|json_encode }})">' +
             '<strong>{{ farmerCity.name }}</strong> <br> {{ farmerCity.total }} membre(s)</button>').openPopup();
         {% endif %}
         {% endfor %}
@@ -124,8 +124,8 @@
         let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}], { icon: greenIcon }).addTo(map);
         marker{{ loop.index }}.bindPopup('<button class="btn btn-sm" ' +
             'onclick="displayInfos(' +
-            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\',' +
-            ' \'{{ averagePrices[farmer.id] ?? 0 }}\')">' +
+            '\'{{ farmerCity.name|lower|title }}\', \'{{ farmer.farmSize }}\',' +
+            ' \'{{ averagePrices[farmer.id] ?? 0 }}\', {{ products[farmer.id]|json_encode }})">' +
             '<strong>{{ farmerCity.name }}</strong> <br> {{ farmerCity.total }} membre(s)</button>').openPopup();
         {% endif %}
         {% endfor %}
@@ -144,7 +144,7 @@
     </script>
 
     <script>
-        function displayInfos(city, farmSize, average) {
+        function displayInfos(city, farmSize, average, products) {
             document.getElementById('infos').innerHTML = '';
             document.getElementById("infos").style.display = "block";
 
@@ -157,7 +157,6 @@
             closeButton.addEventListener("click", function (){
                 document.getElementById('infos').innerHTML = '';
                 document.getElementById('infos').style.display='none';
-                document.getElementById("map").style.width = "100%";
             })
             closeButton.textContent = "X";
             document.getElementById("infos").appendChild(closeButton);
@@ -179,6 +178,25 @@
             let content2 = document.createTextNode("Prix de vente moyen : " + average + " €");
             div2.appendChild(content2);
             document.getElementById("infos").appendChild(div2);
+
+            let div3 = document.createElement("div");
+            div3.className = "m-2";
+            let p1 = document.createElement("p");
+            p1.appendChild(document.createTextNode("Produits vendus : "));
+            div3.appendChild(p1);
+            let div4 = document.createElement("div");
+            div4.className = "row";
+            for (let i = 0; i < products.length; i++) {
+                let divImg = document.createElement("div");
+                divImg.className = "col-2 mx-3 mb-2 text-center";
+                let img = document.createElement("img");
+                img.src = products[i];
+                img.style.borderRadius = "50%";
+                divImg.appendChild(img);
+                div4.appendChild(divImg);
+            }
+            div3.appendChild(div4);
+            document.getElementById("infos").appendChild(div3);
         }
     </script>
 {% endblock %}

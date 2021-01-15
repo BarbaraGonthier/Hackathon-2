@@ -36,6 +36,7 @@ class MapController extends AbstractController
         $farmers = $farmerRepository->findAll();
         foreach ($farmers as $farmer) {
             $averagePrices[$farmer->getId()] = $averagePrice->calculateByFarmer($farmer->getId());
+            $products[$farmer->getId()] = array_column($transactionRepository->findProductsForFarmer($farmer->getId()), 'image');
         }
 
         $buyers = $buyerRepository->findBuyersByCity();
@@ -78,7 +79,8 @@ class MapController extends AbstractController
             'display' => $display,
             'department' => $department,
             'farmers' => $farmers,
-            'averagePrices' => $averagePrices ?? []
+            'averagePrices' => $averagePrices ?? [],
+            'products' => $products ?? []
         ]);
     }
 }
