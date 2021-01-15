@@ -116,7 +116,7 @@
             'onclick="displayInfos(' +
             '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\',' +
             ' \'{{ averagePrices[farmer.id] ?? 0 }}\')">' +
-            '{{ farmerCity.name }} : {{ farmerCity.total }}</button>').openPopup();
+            '<strong>{{ farmerCity.name }}</strong> <br> {{ farmerCity.total }} membre(s)</button>').openPopup();
         {% endif %}
         {% endfor %}
         {% endfor %}
