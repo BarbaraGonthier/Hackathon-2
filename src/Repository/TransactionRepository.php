@@ -19,6 +19,19 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
+    public function findProductsForFarmer($idFarmer)
+    {
+        return $this->createQueryBuilder('trans')
+            ->join('trans.farmer', 'farm')
+            ->join('trans.product', 'prod')
+            ->select('prod.image')
+            ->where('farm.id = :idFarmer')
+            ->setParameter('idFarmer', $idFarmer)
+            ->groupBy('prod.image')
+            ->getQuery()
+            ->getArrayResult();
+    }
+
     // /**
     //  * @return Transaction[] Returns an array of Transaction objects
     //  */
