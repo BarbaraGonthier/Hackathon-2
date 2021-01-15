@@ -8,9 +8,18 @@
 {% endblock %}
 {% block body %}
     <div class="container-fluid mt-3">
-        <div class="filters">
-            <h1 class="mb-3 h4">Recherchez nos membres </h1>
+        <div class="filters navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+</svg>
+                </span>
+            </button>
+            <div class="collapse navbar-collapse pt-3 pb-3" id="navbarSupportedContent">
             {{ form_start(form) }}
+                <h1 class="mb-3 h4">Recherchez nos membres </h1>
             {{ form_row(form.role) }}
             <div class="mb-3">
                 {{ form_label(form.department, 'Département') }} {{ form_widget(form.department)}}
@@ -18,6 +27,7 @@
             <input type='submit' class="btn btn-success btn-small" value='Filtrer'>
             <a href="{{ path('map') }}" type="reset" class="btn btn-secondary btn-small"> Réinitialiser</a>
             {{ form_end(form) }}
+            </div>
         </div>
         <div id="map-container">
             <div class="infosMobile" id="infos"></div>
@@ -85,14 +95,14 @@
         });
         {% if display == 'farmers' %}
         {% for farmer in farmers %}
-        {% for farmerCity in farmersCity %}
+        {% for farmerCity in farmersCities %}
         {% if farmer.id == farmerCity.id %}
         let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}], { icon: greenIcon }).addTo(map);
-        marker{{ loop.index }}.bindPopup('<button class="btn" ' +
+        marker{{ loop.index }}.bindPopup('<button class="btn btn-sm" ' +
             'onclick="displayInfos(' +
-            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\',' +
+            '\'{{ farmerCity.name|lower|title }}\', \'{{ farmer.farmSize }}\',' +
             ' \'{{ averagePrices[farmer.id] ?? 0 }}\', {{ products[farmer.id]|json_encode }})">' +
-            '{{ farmerCity.name }} : {{ farmerCity.total }}</button>').openPopup();
+            '<strong>{{ farmerCity.name }}</strong> <br> {{ farmerCity.total }} membre(s)</button>').openPopup();
         {% endif %}
         {% endfor %}
         {% endfor %}
@@ -109,14 +119,14 @@
         {% endfor %}
         {% else %}
         {% for farmer in farmers %}
-        {% for farmerCity in farmersCity %}
+        {% for farmerCity in farmersCities %}
         {% if farmer.id == farmerCity.id %}
         let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}], { icon: greenIcon }).addTo(map);
-        marker{{ loop.index }}.bindPopup('<button class="btn" ' +
+        marker{{ loop.index }}.bindPopup('<button class="btn btn-sm" ' +
             'onclick="displayInfos(' +
-            '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\',' +
+            '\'{{ farmerCity.name|lower|title }}\', \'{{ farmer.farmSize }}\',' +
             ' \'{{ averagePrices[farmer.id] ?? 0 }}\', {{ products[farmer.id]|json_encode }})">' +
-            '{{ farmerCity.name }} : {{ farmerCity.total }}</button>').openPopup();
+            '<strong>{{ farmerCity.name }}</strong> <br> {{ farmerCity.total }} membre(s)</button>').openPopup();
         {% endif %}
         {% endfor %}
         {% endfor %}
@@ -139,7 +149,7 @@
             document.getElementById("infos").style.display = "block";
 
             document.getElementById("map-container").className = "d-flex flex-row";
-            document.getElementById("map").style.width = "80%";
+            document.getElementById("map").style.width = "100%";
 
             let closeButton = document.createElement("button");
             closeButton.className = "close";
@@ -147,7 +157,6 @@
             closeButton.addEventListener("click", function (){
                 document.getElementById('infos').innerHTML = '';
                 document.getElementById('infos').style.display='none';
-                document.getElementById("map").style.width = "100%";
             })
             closeButton.textContent = "X";
             document.getElementById("infos").appendChild(closeButton);
@@ -160,7 +169,7 @@
 
             let div1 = document.createElement("div");
             div1.className = "m-2";
-            let content1 = document.createTextNode("Taille de la ferme : " + farmSize + " ha");
+            let content1 = document.createTextNode("Taille moyenne de la ferme : " + farmSize + " ha");
             div1.appendChild(content1);
             document.getElementById("infos").appendChild(div1);
 

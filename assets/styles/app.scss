@@ -25,7 +25,6 @@
 
 label {
     margin-right: 24px;
-    margin-left: 4px;
 }
 
 #filter_department {
@@ -43,12 +42,15 @@ label {
     #map{
         height: 80vh;
     }
+    #filter_department {
+        margin-left: auto;
+    }
 
     .infosMobile {
         position: fixed;
         background-color: white;
         width: 100%;
-        height: 100%;
+        height: 40%;
         opacity: 1;
         top: 0;
         right: 0;
@@ -61,4 +63,19 @@ label {
 
 body {
     background-color: $light-grey;
+}
+
+h1 {
+    font-family: $header-font-family;
+    color: $primary;
+    img {
+        width: 52px;
+        height: 52px;
+    }
+}
+
+label {
+    font-family: $default-font-family;
+    font-weight: $semi-bold;
+    color: $dark;
 }
