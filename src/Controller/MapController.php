@@ -10,6 +10,7 @@ use App\Form\FilterType;
 use App\Repository\DepartmentRepository;
 use App\Repository\FarmerRepository;
 use App\Repository\TransactionRepository;
+use App\Service\AveragePrice;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,17 +26,20 @@ class MapController extends AbstractController
         Request $request,
         BuyerRepository $buyerRepository,
         TransactionRepository $transactionRepository,
-        DepartmentRepository $departmentRepository
+        DepartmentRepository $departmentRepository,
+        AveragePrice $averagePrice
     ): Response {
         $display = '';
         $department = '';
         $arrayOfCities = [];
         $farmersCities = $farmerRepository->findFarmersByCity();
         $farmers = $farmerRepository->findAll();
-        //$averagePrices = $transactionRepository->findAveragePrices();
+        foreach ($farmers as $farmer) {
+            $averagePrices[$farmer->getId()] = $averagePrice->calculateByFarmer($farmer->getId());
+        }
 
         $buyers = $buyerRepository->findBuyersByCity();
-      
+
         $filter = new Filter();
         $form = $this->createForm(FilterType::class, $filter);
         $form->handleRequest($request);
@@ -74,6 +78,7 @@ class MapController extends AbstractController
             'display' => $display,
             'department' => $department,
             'farmers' => $farmers,
+            'averagePrices' => $averagePrices ?? []
         ]);
     }
 }
