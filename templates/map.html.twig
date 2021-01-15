@@ -8,9 +8,14 @@
 {% endblock %}
 {% block body %}
     <div class="container-fluid mt-3">
-        <div class="filters">
-            <h1 class="mb-3 h4">Recherchez nos membres </h1>
+        <div class="filters navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span><img src="{{ asset('build/CA-logo.png') }}" style="width:50px"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
             {{ form_start(form) }}
+                <h1 class="mb-3 h4">Recherchez nos membres </h1>
             {{ form_row(form.role) }}
             <div class="mb-3">
                 {{ form_label(form.department, 'Département') }} {{ form_widget(form.department)}}
@@ -18,6 +23,7 @@
             <input type='submit' class="btn btn-success btn-small" value='Filtrer'>
             <a href="{{ path('map') }}" type="reset" class="btn btn-secondary btn-small"> Réinitialiser</a>
             {{ form_end(form) }}
+            </div>
         </div>
         <div id="map-container">
             <div class="infosMobile" id="infos"></div>
