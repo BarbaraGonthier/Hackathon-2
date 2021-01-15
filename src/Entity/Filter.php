@@ -9,7 +9,7 @@ class Filter
 {
     private $role = '' ;
 
-    private Department $department;
+    private ?Department $department = null;
 
     public function getRole(): ?string
     {

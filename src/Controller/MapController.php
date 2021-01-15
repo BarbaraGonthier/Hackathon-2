@@ -7,6 +7,7 @@ use App\Repository\BuyerRepository;
 use App\Entity\Filter;
 use App\Form\FilterType;
 
+use App\Repository\DepartmentRepository;
 use App\Repository\FarmerRepository;
 use App\Repository\TransactionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +24,8 @@ class MapController extends AbstractController
         FarmerRepository $farmerRepository,
         Request $request,
         BuyerRepository $buyerRepository,
-        TransactionRepository $transactionRepository
+        TransactionRepository $transactionRepository,
+        DepartmentRepository $departmentRepository
     ): Response {
         $display = '';
         $department = '';
@@ -45,25 +47,24 @@ class MapController extends AbstractController
                 $display = 'buyers';
             }
             $department = $filters->getDepartment();
-            $departmentCities = $department->getCities();
-            foreach($departmentCities as $departmentCity) {
-                $arrayOfCities[] = $departmentCity->getName();
-            }
-            foreach ($farmersCities as $farmer) {
-                $farmerCity = $farmer['name'];
-                if (in_array($farmerCity, $arrayOfCities)) {
-                    $farmersResult[] = $farmer;
+            if (isset($department)) {
+                $departmentCities = $department->getCities();
+                foreach($departmentCities as $departmentCity) {
+                    $arrayOfCities[] = $departmentCity->getName();
+                }
+                foreach ($farmersCities as $farmer) {
+                    $farmerCity = $farmer['name'];
+                    if (in_array($farmerCity, $arrayOfCities)) {
+                        $farmersResult[] = $farmer;
+                    }
+                }
+                foreach ($buyers as $buyer) {
+                    $buyerCity = $buyer['name'];
+                    if (in_array($buyerCity, $arrayOfCities)) {
+                        $buyersResult[] = $buyer;
+                    }
                 }
             }
-            foreach ($buyers as $buyer) {
-                $buyerCity = $buyer['name'];
-                if (in_array($buyerCity, $arrayOfCities)) {
-                    $buyersResult[] = $buyer;
-                }
-            }
-
-            $farmersCities = [];
-            $buyers = [];
         }
 
         return $this->render('map.html.twig', [
