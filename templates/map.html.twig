@@ -122,7 +122,7 @@
         {% for farmerCity in farmersCity %}
         {% if farmer.id == farmerCity.id %}
         let marker{{ loop.index }} = L.marker([{{ farmerCity.latitude }}, {{ farmerCity.longitude }}], { icon: greenIcon }).addTo(map);
-        marker{{ loop.index }}.bindPopup('<button class="btn" ' +
+        marker{{ loop.index }}.bindPopup('<button class="btn btn-sm" ' +
             'onclick="displayInfos(' +
             '\'{{ farmerCity.name|lower|capitalize }}\', \'{{ farmer.farmSize }}\',' +
             ' \'{{ averagePrices[farmer.id] ?? 0 }}\')">' +
