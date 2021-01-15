@@ -78,7 +78,7 @@
         function onLocationFound(e) {
             let radius = e.accuracy / 2;
             L.marker(e.latlng,  {icon: redIcon}).addTo(map)
-                .bindPopup("You are within " + radius + " meters from this point").openPopup();
+                .bindPopup("Vous êtes ici").openPopup();
             L.circle(e.latlng, radius).addTo(map);
         }
         function onLocationError(e) {
