@@ -15,7 +15,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
             {{ form_start(form) }}
-                <h1 class="mb-3 h4">Recherchez nos membres </h1>
+                <h1 class="mb-3 h4"><img src="{{ asset('build/CA-logo.png') }}" alt="logo">Recherchez nos membres </h1>
             {{ form_row(form.role) }}
             <div class="mb-3">
                 {{ form_label(form.department, 'Département') }} {{ form_widget(form.department)}}

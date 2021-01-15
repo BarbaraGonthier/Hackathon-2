@@ -65,3 +65,18 @@ label {
 body {
     background-color: $light-grey;
 }
+
+h1 {
+    font-family: $header-font-family;
+    color: $primary;
+    img {
+        width: 52px;
+        height: 52px;
+    }
+}
+
+label {
+    font-family: $default-font-family;
+    font-weight: $semi-bold;
+    color: $dark;
+}
